@@ -34,6 +34,13 @@ app.get('/listings', async (req, res) => {
     res.render('listings/index', { allListing });
 });
 
+//show route
+app.get('/listings/:id', async (req, res) => {
+    let { id } = req.params;
+    const listingDetails = await listing.findById(id);
+    res.render('listings/show', { listing: listingDetails })
+})
+
 // app.get('/testListing', (req, res) => {
 //     let sampleListing = new listing({
 //         title: 'My new Villa',
