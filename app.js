@@ -3,6 +3,7 @@ const app = express();
 const mongoose = require('mongoose');
 const listing = require('./models/listing.js');
 const path = require('path');
+const methodOverride = require('method-override');
 
 const port = 8080;
 
@@ -13,6 +14,7 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(methodOverride('_method'));
 
 
 main().then(() => {
@@ -34,11 +36,47 @@ app.get('/listings', async (req, res) => {
     res.render('listings/index', { allListing });
 });
 
+//new route
+app.get('/listings/new', (req, res) => {
+    res.render('listings/new.ejs')
+})
+
 //show route
 app.get('/listings/:id', async (req, res) => {
     let { id } = req.params;
     const listingDetails = await listing.findById(id);
     res.render('listings/show', { listing: listingDetails })
+});
+
+// create new listings
+app.post('/listings', (req, res) => {
+    let newListing = new listing(req.body.listing);
+    newListing.save();
+    res.redirect('/listings')
+
+});
+
+//edit route
+app.get('/listings/:id/edit', async (req, res) => {
+    let { id } = req.params;
+    const listingDetails = await listing.findById(id);
+    res.render('listings/edit.ejs', { listing: listingDetails })
+});
+
+// update route
+app.put('/listings/:id', async (req, res) => {
+    let { id } = req.params;
+    await listing.findByIdAndUpdate(id, { ...req.body.listing });
+    res.redirect(`/listings/${id}`);
+});
+
+// delete route
+
+app.delete('/listings/:id', async (req, res) => {
+    let { id } = req.params;
+    let deleteListing = await listing.findByIdAndDelete(id);
+    console.log(deleteListing);
+    res.redirect('/listings');
 })
 
 // app.get('/testListing', (req, res) => {
