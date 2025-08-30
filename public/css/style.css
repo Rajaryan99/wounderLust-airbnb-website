@@ -1,5 +1,13 @@
 body {
     font-family: "Plus Jakarta Sans", sans-serif !important;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+
+}
+
+.container {
+    flex: 1;
 }
 
 .navbar {
@@ -89,4 +97,71 @@ body {
 .card-img-overlay:hover {
     opacity: 0.2;
     background-color: #fff;
+}
+
+/* edit page styling */
+
+.edit-heading {
+    font-weight: 600;
+    color: #fff;
+    margin-left: 1rem;
+}
+
+.edit-div {
+    background-color: #fe424d;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.edit-btn {
+    background-color: #fe424d !important;
+    border: none !important;
+    font-weight: 600 !important;
+}
+
+/* new page styling */
+
+.new-div {
+    background-color: #fe424d;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.new-div h3 {
+    font-weight: 600;
+    color: #fff;
+    margin-left: 1rem;
+}
+
+.new-btn {
+    background-color: #fe424d !important;
+    border: none !important;
+    font-weight: 600 !important;
+}
+
+/* show page styling */
+
+.show-img {
+    height: 30vh;
+}
+
+.btns {
+    display: flex;
+
+}
+
+.show-heading {
+    background-color: #fe424d;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.show-heading h3 {
+    color: #fff;
+}
+
+.delete-btn {
+    background-color: #fe424d !important;
+    border: none !important;
+    font-weight: 600 !important;
 }
