@@ -1,3 +1,21 @@
-body {
+/* body {
     background-color: rgba(249, 137, 137, 0.685);
+} */
+
+.navbar {
+    height: 5rem;
+}
+
+.fa-compass {
+    color: #fe424d;
+    font-size: 2rem;
+}
+
+.nav-link {
+    color: #222222 !important;
+    font-weight: 600;
+}
+
+.nav-link:hover {
+    color: #fe424d !important;
 }
