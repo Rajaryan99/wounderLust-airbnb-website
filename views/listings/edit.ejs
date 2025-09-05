@@ -9,35 +9,50 @@
                     <h3 class="edit-heading">Edit this listing..</h3>
                 </div>
                 <br><br>
-                <form method="post" action="/listings/<%=listing._id%>?_method=PUT">
+                <form method="post" action="/listings/<%=listing._id%>?_method=PUT" novalidate class="needs-validation">
                     <div class="mb-3">
                         <label for="title" class="form-label">Title</label>
-                        <input type="text" class="form-control" name="listing[title]" value="<%=listing.title%>">
+                        <input type="text" class="form-control" required name="listing[title]"
+                            value="<%=listing.title%>">
+                        <div id="validationServerUsernameFeedback" class="invalid-feedback"> Please provide valid title
+                        </div>
                     </div>
                     <div class="mb-3">
                         <label for="description" class="form-lable">Description</label>
-                        <textarea type="text" class="form-control" name="listing[description]" rows="10"
-                            cols="40"><%=listing.description%></textarea>
+                        <textarea type="text" class="form-control" name="listing[description]" rows="10" cols="40"
+                            required><%=listing.description%></textarea>
+                        <div id="validationServerUsernameFeedback" class="invalid-feedback"> Please provide valid
+                            description</div>
+
                     </div>
                     <div class="mb-3">
                         <label for="image" class="form-label">Image</label>
-                        <input type="text" class="form-control" name="listing[image][url]"
+                        <input type="text" class="form-control" required name="listing[image][url]"
                             value="<%=listing.image.url%>">
+                        <div id="validationServerUsernameFeedback" class="invalid-feedback">Please provide valid link.
+                        </div>
                     </div>
                     <div class="mb-3">
                         <label for="price" class="form-label">Price</label>
-                        <input type="number" class="form-control" name="listing[price]" value="<%=listing.price%>">
+                        <input type="number" class="form-control" required name="listing[price]"
+                            value="<%=listing.price%>">
+                        <div id="validationServerUsernameFeedback" class="invalid-feedback"> Please provide valid price
+                        </div>
                     </div>
                     <div class="row">
                         <div class="mb-3 col-md-4">
                             <label for="location" class="form-label">Location</label>
-                            <input type="text" class="form-control" name="listing[location]"
+                            <input type="text" required class="form-control" name="listing[location]"
                                 value="<%=listing.location%>">
+                            <div id="validationServerUsernameFeedback" class="invalid-feedback"> Please provide valid
+                                city </div>
                         </div>
                         <div class="mb-3 col-md-8">
                             <label for="country" class="form-label">Country</label>
-                            <input type="text" class="form-control" name="listing[country]"
+                            <input type="text" required class="form-control" name="listing[country]"
                                 value="<%=listing.country%>">
+                            <div id="validationServerUsernameFeedback" class="invalid-feedback"> Please provide valid
+                                country name </div>
                         </div>
                     </div>
                     <button class="btn btn-dark mb-3 edit-btn">Edit</button>

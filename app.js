@@ -52,13 +52,19 @@ app.get('/listings/:id', async (req, res) => {
     res.render('listings/show', { listing: listingDetails })
 });
 
-// create new listings
+try {
+    // create new listings
 app.post('/listings', (req, res) => {
     let newListing = new listing(req.body.listing);
     newListing.save();
     res.redirect('/listings')
 
 });
+    
+} catch (err) {
+    next(err);
+}
+
 
 //edit route
 app.get('/listings/:id/edit', async (req, res) => {
@@ -96,6 +102,10 @@ app.delete('/listings/:id', async (req, res) => {
 //     console.log(sampleListing);
 //     res.send('data saved successfully');
 // });
+
+app.use((err, req, res, next) => {
+    res.send('Something went wrong', err.message);
+})
 
 app.listen(port, () => {
     console.log(`Server is running on http://localost:${port}`);
