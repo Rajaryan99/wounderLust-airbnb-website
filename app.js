@@ -37,6 +37,15 @@ app.get('/', (req, res) => {
     res.send('hi, this is root')
 });
 
+const validateListing = (req, res, next) => {
+     let {error} = listingSchema.validate(req.body);
+    if (error) {
+        throw new ExpressError(400, error);
+    } else {
+        next();
+    }
+}
+
 //index route
 app.get('/listings', wrapAsync(async (req, res) => {
     const allListing = await listing.find({});
@@ -56,12 +65,7 @@ app.get('/listings/:id', wrapAsync(async (req, res) => {
 }));
 
 // create new listings
-app.post('/listings', wrapAsync(async (req, res, next) => {
-    let result = listingSchema.validate(req.body);
-    console.log(result);
-    if (result.error) {
-        throw new ExpressError(400, result.error);
-    }
+app.post('/listings', validateListing, wrapAsync(async (req, res, next) => {
     let newListing = new listing(req.body.listing);
     await newListing.save();
     res.redirect('/listings')
@@ -77,7 +81,7 @@ app.get('/listings/:id/edit', wrapAsync(async (req, res) => {
 }));
 
 // update route
-app.put('/listings/:id', wrapAsync(async (req, res) => {
+app.put('/listings/:id',validateListing,  wrapAsync(async (req, res) => {
     let { id } = req.params;
     await listing.findByIdAndUpdate(id, { ...req.body.listing });
     res.redirect(`/listings/${id}`);
