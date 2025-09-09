@@ -63,6 +63,9 @@
                         <p class="card-text">
                             Rating: <%=review.rating%> <span style="color: orange;">Star</span>
                         </p>
+                        <form action="/listings/<%=listing._id%>/reviews/<%=review._id%>?_method=DELETE" method="POST">
+                            <button class="btn btn-sm btn-dark">Delete</button>
+                        </form>
                     </div>
                 </div>
                 <% } %>

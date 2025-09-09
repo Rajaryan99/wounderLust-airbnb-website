@@ -127,6 +127,18 @@ app.post('/listings/:id/reviews', validateReviews, wrapAsync(async (req, res) =>
     res.send('new reviews added');
 }));
 
+
+//delete review route
+app.delete('/listings/:id/reviews/:reviewId', wrapAsync(async (req, res) => {
+    let { id, reviewId } = req.params;
+
+    await listing.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });
+    await Review.findByIdAndDelete(reviewId);
+
+    res.redirect(`/listings/${id}`)
+})
+);
+
 // app.get('/testListing', (req, res) => {
 //     let sampleListing = new listing({
 //         title: 'My new Villa',
