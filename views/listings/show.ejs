@@ -10,7 +10,7 @@
             </b>
         </h3>
 
-        <div class="card col-6 offset-2">
+        <div class="card col-6 offset-2 listing-card">
             <!-- <br><br> -->
             <img src="<%= listing.image.url%>" class="card-img-top show-img mb-2" alt="Listing-img">
             <div class="card-body">
@@ -32,7 +32,7 @@
         </div>
 
         <hr class="mt-5">
-        <div class="card col-6 offset-2 mt-3">
+        <div class="card col-6 offset-2 mt-3 p-2 mb-4">
             <h4 class="mb-3"><b>Leave a Review</b></h4>
             <form action="/listings/<%=listing._id%>/reviews" method="POST" novalidate class="needs-validation">
                 <div class="mb-3">
@@ -50,14 +50,22 @@
 
             <hr>
 
-            <h4>All Reviews</h4>
+            <h4><b>All Reviews</b></h4>
 
-            <ul>
-                <% for(let review of listing.reviews) {%>
-                    <li>
-                        <%=review.comment%> , <%=review.rating%>
-                    </li>
-                    <% } %>
-            </ul>
+
+            <% for(let review of listing.reviews) {%>
+                <div class="card p-3 mt-2">
+                    <div class="card-body">
+                        <h6 class="card-title"><b>Jone duo</b></h6>
+                        <p class="card-text">
+                            <%=review.comment%>
+                        </p>
+                        <p class="card-text">
+                            Rating: <%=review.rating%> <span style="color: orange;">Star</span>
+                        </p>
+                    </div>
+                </div>
+                <% } %>
+
         </div>
     </div>
