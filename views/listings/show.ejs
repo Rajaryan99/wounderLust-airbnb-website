@@ -1,16 +1,20 @@
 <% layout('/layouts/boilerplate') %>
 
     <div class="row">
-        <div class="col col-6 offset-2 mt-5 mb-4 show-heading">
+        <!-- <div class="col col-6 offset-2 mt-5 mb-4 show-heading">
             <h3>Listings Details</h3>
-        </div>
+        </div> -->
+        <h3 class="col col-6 offset-2 mt-3 mb-2">
+            <b>
+                <%= listing.title%>
+            </b>
+        </h3>
+
         <div class="card col-6 offset-2">
+            <!-- <br><br> -->
             <img src="<%= listing.image.url%>" class="card-img-top show-img mb-2" alt="Listing-img">
             <div class="card-body">
                 <p class="card-text">
-                    <b>
-                        <%= listing.title%>
-                    </b> <br>
                     <%= listing.description%> <br>
                         &#8377; <%= listing.price%> <br> <!--.toLocaleString('en-IN')-->
                             <%= listing.location%> <br>
@@ -24,6 +28,23 @@
 
             <form action="/listings/<%=listing._id%>" method="POST">
                 <button class="btn btn-dark offset-2 delete-btn">Delete </button>
+            </form>
+        </div>
+
+        <hr class="mt-5">
+        <div class="card col-6 offset-2 mt-3">
+            <h4 class="mb-3"><b>Leave a Review</b></h4>
+            <form action="">
+                <div class="mb-3">
+                    <label for="rating" class="form-label">Rating</label>
+                    <input type="range" min="1" max="5" name="review[rating]" id="rating">
+                </div>
+                <div>
+                    <label for="comment" class="form-label">comment</label>
+                    <textarea name="review[comment]" rows="5" cols="30" id="comment" placeholder="Review please..."
+                        class="p-2 form-control"></textarea>
+                </div>
+                <button class="btn btn-dark  delete-btn mt-2">Submit</button>
             </form>
         </div>
     </div>
