@@ -12,7 +12,8 @@
 
         <div class="card col-6 offset-2 listing-card">
             <!-- <br><br> -->
-            <img src="<%= listing.image.url%>" class="card-img-top show-img mb-2" alt="Listing-img">
+            <img src="<%= listing.image.url ||'https://via.placeholder.com/400x300.png?text=No+Image'%>"
+                class="card-img-top show-img mb-2" alt="Listing-img">
             <div class="card-body">
                 <p class="card-text">
                     <%= listing.description%> <br>

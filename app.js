@@ -1,17 +1,14 @@
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
-const listing = require('./models/listing.js');
 const path = require('path');
 const methodOverride = require('method-override');
 const ejsMate = require('ejs-mate');
-const wrapAsync = require('./utils/wrapAsync.js');
-const ExpressError = require('./utils/ExpressError.js');
-const { listingSchema } = require('./schema.js');
-const Review = require('./models/review.js');
-const { reviewSchema } = require('./schema.js');
+const ExpressError = require('./utils/ExpressError.js')
+
 
 const listings = require('./routes/listing.js');
+const reviews = require('./routes/review.js')
 
 const port = 8080;
 
@@ -41,66 +38,13 @@ app.get('/', (req, res) => {
     res.send('hi, this is root')
 });
 
-
+// Listing routes
 app.use('/listings', listings);
 
-//validate reviews
-
-const validateReviews = (req, res, next) => {
-    let { error } = reviewSchema.validate(req.body);
-    if (error) {
-        throw new ExpressError(400, error);
-    } else {
-        next();
-    }
-}
+//reviews routes
+app.use('/listings/:id/reviews', reviews);
 
 
-//Reviews Post routes
-
-app.post('/listings/:id/reviews', validateReviews, wrapAsync(async (req, res) => {
-    let Listing = await listing.findById(req.params.id);
-    let { id } = req.params;
-    let newReview = new Review(req.body.review);
-
-    Listing.reviews.push(newReview);
-
-    await newReview.save();
-    await Listing.save();
-
-    console.log('new review Saved');
-    res.redirect(`/listings/${id}`);
-}));
-
-
-//delete review route
-app.delete('/listings/:id/reviews/:reviewId', wrapAsync(async (req, res) => {
-    let { id, reviewId } = req.params;
-
-    await listing.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });
-    await Review.findByIdAndDelete(reviewId);
-
-    res.redirect(`/listings/${id}`)
-})
-);
-
-// app.get('/testListing', (req, res) => {
-//     let sampleListing = new listing({
-//         title: 'My new Villa',
-//         description: "Above the sky...",
-//         price: 1200,
-//         location: 'Banglore',
-//         country: 'India'
-//     });
-
-//     sampleListing.save();
-//     console.log(sampleListing);
-//     res.send('data saved successfully');
-// });
-
-// app.all('*', (req, res, next) => {
-//     next(new ExpressError(404, 'Page Not Found!'));
-// });
 
 app.use((err, req, res, next) => {
     let { statusCode = 500, message = 'Something went wrong' } = err;
