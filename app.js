@@ -75,7 +75,18 @@ app.use((req, res, next) => {
     res.locals.success = req.flash('success');
     res.locals.error = req.flash('error');
     next();
-})
+});
+
+// creating a fake user
+app.get('/demouser', async(req, res) => {
+    let fakeUser = new User({
+        email: "fakeuser@gmail.com",
+        username: "fake-user",
+    });
+
+   let registerUser = await User.register(fakeUser, "helloWorld") //pass the user and passWord
+   res.send(registerUser);
+});
 
 // Listing routes
 app.use('/listings', listings);
