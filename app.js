@@ -7,6 +7,7 @@ const ExpressError = require('./utils/ExpressError.js');
 const session = require('express-session');
 const listings = require('./routes/listing.js');
 const reviews = require('./routes/review.js');
+const flash = require('connect-flash');
 
 const app = express();
 
@@ -17,9 +18,14 @@ const sessionOption = {
     secret: "mySuperSecretCode",
     resave: false,
     saveUninitialized: true,
-
-}
+    Cookie: {
+        expires: Date.now() + 7 *  24 * 60 * 60 * 1000,
+        maxAge: 7 *  24 * 60 * 60 * 1000,
+        httpOnly: true,
+    }
+};
 app.use(session(sessionOption)); //passing sessionOption
+app.use(flash()); //connect-flash to show message once
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -46,6 +52,11 @@ async function main() {
 app.get('/', (req, res) => {
     res.send('hi, this is root')
 });
+
+app.use((req, res, next) => {
+    res.locals.success = req.flash('success');
+    next();
+})
 
 // Listing routes
 app.use('/listings', listings);
