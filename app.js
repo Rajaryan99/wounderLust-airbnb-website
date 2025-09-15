@@ -1,16 +1,25 @@
 const express = require('express');
-const app = express();
 const mongoose = require('mongoose');
 const path = require('path');
 const methodOverride = require('method-override');
 const ejsMate = require('ejs-mate');
-const ExpressError = require('./utils/ExpressError.js')
-
-
+const ExpressError = require('./utils/ExpressError.js');
+const session = require('express-session');
 const listings = require('./routes/listing.js');
-const reviews = require('./routes/review.js')
+const reviews = require('./routes/review.js');
+
+const app = express();
 
 const port = 8080;
+
+//express sessions
+const sessionOption = {
+    secret: "mySuperSecretCode",
+    resave: false,
+    saveUninitialized: true,
+
+}
+app.use(session(sessionOption)); //passing sessionOption
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -24,7 +33,7 @@ app.engine('ejs', ejsMate);
 
 app.use(express.static(path.join(__dirname, 'public')))
 
-
+// Connecting Database  MONGODB
 main().then(() => {
     console.log('connected successfully');
 })
@@ -51,6 +60,6 @@ app.use((err, req, res, next) => {
     res.render('error.ejs', { message });
 });
 
-app.listen(port, () => {
+app.listen(process.env.PORT || 8080, () => {
     console.log(`Server is running on http://localhost:${port}`);
 });

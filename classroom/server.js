@@ -26,7 +26,8 @@ app.get('/register', (req, res) => {
 });
 
 app.get('/hello', (req, res) => {
-    res.render('page.ejs', { name: req.session.name, msg: req.flash("success") })
+    res.locals.msg = req.flash('success');
+    res.render('page.ejs', { name: req.session.name })
 })
 
 app.get('/test', (req, res) => {
