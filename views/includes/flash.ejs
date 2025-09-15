@@ -1,6 +1,16 @@
+
+<!-- for Success message -->
 <% if(success && success.length){ %>
     <div class="alert alert-success mt-2 alert-dismissible fade show offset-2 col-6" role="alert">
         <%=success%>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
     <% } %>
+
+        <!-- for Error Message -->
+        <% if(error && error.length){ %>
+            <div class="alert alert-danger mt-2 alert-dismissible fade show offset-2 col-6" role="alert">
+                <%=error%>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            <% } %>

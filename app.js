@@ -19,8 +19,8 @@ const sessionOption = {
     resave: false,
     saveUninitialized: true,
     Cookie: {
-        expires: Date.now() + 7 *  24 * 60 * 60 * 1000,
-        maxAge: 7 *  24 * 60 * 60 * 1000,
+        expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
+        maxAge: 7 * 24 * 60 * 60 * 1000,
         httpOnly: true,
     }
 };
@@ -50,11 +50,12 @@ async function main() {
 }
 
 app.get('/', (req, res) => {
-    res.send('hi, this is root')
+    res.redirect('/listings')
 });
 
 app.use((req, res, next) => {
     res.locals.success = req.flash('success');
+    res.locals.error = req.flash('error');
     next();
 })
 
