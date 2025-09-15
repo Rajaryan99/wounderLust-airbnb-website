@@ -8,24 +8,14 @@ const session = require('express-session');
 const listings = require('./routes/listing.js');
 const reviews = require('./routes/review.js');
 const flash = require('connect-flash');
+const passport = require('passport');
+const LocalStrategy = require('passport-local');
+const User = require('./models/user.auth.js');
 
 const app = express();
 
 const port = 8080;
 
-//express sessions
-const sessionOption = {
-    secret: "mySuperSecretCode",
-    resave: false,
-    saveUninitialized: true,
-    Cookie: {
-        expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
-        maxAge: 7 * 24 * 60 * 60 * 1000,
-        httpOnly: true,
-    }
-};
-app.use(session(sessionOption)); //passing sessionOption
-app.use(flash()); //connect-flash to show message once
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -52,6 +42,34 @@ async function main() {
 app.get('/', (req, res) => {
     res.redirect('/listings')
 });
+
+
+//express sessions
+const sessionOption = {
+    secret: "mySuperSecretCode",
+    resave: false,
+    saveUninitialized: true,
+    Cookie: {
+        expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+        httpOnly: true,
+    }
+};
+
+app.use(session(sessionOption)); //passing sessionOption
+app.use(flash()); //connect-flash to show message once
+
+// User Authentication 
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+
+
+//for storing the user auth (serializing) aand (deserialize)
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
+
 
 app.use((req, res, next) => {
     res.locals.success = req.flash('success');
