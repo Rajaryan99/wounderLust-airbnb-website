@@ -5,6 +5,7 @@ const ExpressError = require('../utils/ExpressError.js');
 const { reviewSchema } = require('../schema.js');
 const { listingSchema } = require('../schema.js');
 const listing = require('../models/listing.js');
+const { isLoggedIn } = require('../middleware.js');
 
 
 
@@ -22,31 +23,31 @@ const validateListing = (req, res, next) => {
 
 //index route
 router.get('/', wrapAsync(async (req, res) => {
-        const allListing = await listing.find({});
-        res.render('listings/index', { allListing });
-    })
+    const allListing = await listing.find({});
+    res.render('listings/index', { allListing });
+})
 );
 
 //new route
-router.get('/new', (req, res) => {
+router.get('/new', isLoggedIn, (req, res) => {
     res.render('listings/new.ejs')
 });
 
 //show route
 router.get('/:id', wrapAsync(async (req, res) => {
-        let { id } = req.params;
-        const listingDetails = await listing.findById(id).populate('reviews');
-        if(!listingDetails){
-            req.flash('error', "Page Not Found '_'");
-            return res.redirect('/listings');
-        }
-        res.render('listings/show', { listing: listingDetails })
-    })
+    let { id } = req.params;
+    const listingDetails = await listing.findById(id).populate('reviews');
+    if (!listingDetails) {
+        req.flash('error', "Page Not Found '_'");
+        return res.redirect('/listings');
+    }
+    res.render('listings/show', { listing: listingDetails })
+})
 );
 
 
 // create new listings
-router.post('/', validateListing, wrapAsync(async (req, res, next) => {
+router.post('/', isLoggedIn, validateListing, wrapAsync(async (req, res, next) => {
     let newListing = new listing(req.body.listing);
     await newListing.save();
     req.flash('success', "New Listing Created!");
@@ -56,18 +57,18 @@ router.post('/', validateListing, wrapAsync(async (req, res, next) => {
 
 
 //edit route
-router.get('/:id/edit', wrapAsync(async (req, res) => {
+router.get('/:id/edit', isLoggedIn, wrapAsync(async (req, res) => {
     let { id } = req.params;
     const listingDetails = await listing.findById(id);
-     if(!listingDetails){
-         req.flash('error', "Page Not Found '_'");
+    if (!listingDetails) {
+        req.flash('error', "Page Not Found '_'");
         return res.redirect('/listings');
     }
     res.render('listings/edit.ejs', { listing: listingDetails })
 }));
 
 // update route
-router.put('/:id', validateListing, wrapAsync(async (req, res) => {
+router.put('/:id', isLoggedIn, validateListing, wrapAsync(async (req, res) => {
     let { id } = req.params;
     await listing.findByIdAndUpdate(id, { ...req.body.listing });
     req.flash('success', "Listing Updated!");
@@ -76,7 +77,7 @@ router.put('/:id', validateListing, wrapAsync(async (req, res) => {
 
 // delete route
 
-router.delete('/:id', wrapAsync(async (req, res) => {
+router.delete('/:id', isLoggedIn, wrapAsync(async (req, res) => {
     let { id } = req.params;
     let deleteListing = await listing.findByIdAndDelete(id);
     console.log(deleteListing);
