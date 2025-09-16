@@ -14,8 +14,14 @@ router.post('/signup', wrapAsync(async (req, res) => {
         const newUser = new User({ email, username });
         const registeredUser = await User.register(newUser, password);
         console.log(registeredUser);
-        req.flash('success', "Welcome to WounderLust!");
-        res.redirect('/listings');
+        req.login(registeredUser, (err) => {
+            if (err) {
+                return next(err)
+            }
+            req.flash('success', "Welcome to WounderLust!");
+            res.redirect('/listings');
+        })
+
     } catch (error) {
         req.flash('error', error.message);
         res.redirect('/signup');
@@ -35,10 +41,10 @@ router.post('/login', passport.authenticate('local', { failureRedirect: '/login'
 
 router.get('/logout', (req, res, next) => {
     req.logOut((err) => {
-        if(err) {
-          return next(err);
+        if (err) {
+            return next(err);
         }
-        req.flash('success', "You are logged out!" );
+        req.flash('success', "You are logged out!");
         res.redirect('/listings');
     });
 });
