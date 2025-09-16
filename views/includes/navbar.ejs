@@ -10,6 +10,17 @@
         <a class="nav-link" href="/listings">All Listings</a>
         <a class="nav-link" href="/listings/new">Add new Listings</a>
       </div>
+      <div class="navbar-nav ms-auto">
+        <%if (!currUser) { %>
+          <span class="btn  mb-3 auth-btn signup"> <a class="nav-link " aria-current="page"
+              href="/signup">SignUp</a></span>
+          <span class="btn  mb-3  login"><a class="nav-link" href="/login">Log <span
+                style="color:#fe424d  ;">In</span></a></span>
+          <% } %>
+            <%if (currUser) { %>
+              <span class="btn btn-dark mb-3 auth-btn"> <a class="nav-link" href="/logout">LogOut</a></span>
+              <% } %>
+      </div>
     </div>
   </div>
 </nav>
