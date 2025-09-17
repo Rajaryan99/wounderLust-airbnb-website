@@ -33,10 +33,11 @@ router.get('/new', isLoggedIn, (req, res) => {
     res.render('listings/new.ejs')
 });
 
+
 //show route
 router.get('/:id', wrapAsync(async (req, res) => {
     let { id } = req.params;
-    const listingDetails = await listing.findById(id).populate('reviews');
+    const listingDetails = await listing.findById(id).populate('reviews').populate('owner');
     if (!listingDetails) {
         req.flash('error', "Page Not Found '_'");
         return res.redirect('/listings');
@@ -49,6 +50,7 @@ router.get('/:id', wrapAsync(async (req, res) => {
 // create new listings
 router.post('/', isLoggedIn, validateListing, wrapAsync(async (req, res, next) => {
     let newListing = new listing(req.body.listing);
+    newListing.owner = req.user._id;
     await newListing.save();
     req.flash('success', "New Listing Created!");
     res.redirect('/listings');
@@ -75,8 +77,8 @@ router.put('/:id', isLoggedIn, validateListing, wrapAsync(async (req, res) => {
     res.redirect(`/listings/${id}`);
 }));
 
-// delete route
 
+// delete route
 router.delete('/:id', isLoggedIn, wrapAsync(async (req, res) => {
     let { id } = req.params;
     let deleteListing = await listing.findByIdAndDelete(id);
