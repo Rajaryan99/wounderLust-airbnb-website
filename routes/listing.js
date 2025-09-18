@@ -22,28 +22,23 @@ const validateListing = (req, res, next) => {
 };
 
 
-//index route
-router.get('/', wrapAsync(listingController.index));
+router
+    .route('/')
+    .get(wrapAsync(listingController.index))
+    .post(isLoggedIn, validateListing, wrapAsync(listingController.createListing));
+
 
 //new route
 router.get('/new', isLoggedIn, listingController.renderNewFrom);
 
-//show route
-router.get('/:id', wrapAsync(listingController.showListing));
 
-
-// create new listings
-router.post('/', isLoggedIn, validateListing, wrapAsync(listingController.createListing));
-
+router
+    .route('/:id')
+    .get(wrapAsync(listingController.showListing))
+    .put(isLoggedIn, validateListing, wrapAsync(listingController.updateListing))
+    .delete(isLoggedIn, wrapAsync(listingController.deleteListing));
 
 //edit route
 router.get('/:id/edit', isLoggedIn, wrapAsync(listingController.renderEditForm));
-
-// update route
-router.put('/:id', isLoggedIn, validateListing, wrapAsync(listingController.updateListing));
-
-
-// delete route
-router.delete('/:id', isLoggedIn, wrapAsync(listingController.deleteListing));
 
 module.exports = router;
