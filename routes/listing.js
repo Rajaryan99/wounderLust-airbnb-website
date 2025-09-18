@@ -6,6 +6,7 @@ const { reviewSchema } = require('../schema.js');
 const { listingSchema } = require('../schema.js');
 const listing = require('../models/listing.js');
 const { isLoggedIn } = require('../middleware.js');
+const listingController = require('../controllers/listing.js');
 
 
 
@@ -22,10 +23,7 @@ const validateListing = (req, res, next) => {
 
 
 //index route
-router.get('/', wrapAsync(async (req, res) => {
-    const allListing = await listing.find({});
-    res.render('listings/index', { allListing });
-})
+router.get('/', wrapAsync(listingController.index)
 );
 
 //new route
