@@ -27,10 +27,9 @@ router.get('/', wrapAsync(listingController.index)
 );
 
 //new route
-router.get('/new', isLoggedIn, (req, res) => {
-    res.render('listings/new.ejs')
-});
+router.get('/new', isLoggedIn,listingController.renderNewFrom );
 
+//kjdfkjsadbfksjadf
 
 //show route
 router.get('/:id', wrapAsync(async (req, res) => {
