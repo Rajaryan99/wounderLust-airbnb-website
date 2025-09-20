@@ -8,7 +8,8 @@ const listing = require('../models/listing.js');
 const { isLoggedIn } = require('../middleware.js');
 const listingController = require('../controllers/listing.js');
 const multer = require('multer');
-const upload = multer({ dest: 'uploads/' }); //temp
+const {storage} = require('../cloudConfig.js')
+const upload = multer({ storage }); 
 
 
 
