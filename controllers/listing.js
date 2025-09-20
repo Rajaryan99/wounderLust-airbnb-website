@@ -40,18 +40,21 @@ module.exports.renderEditForm = async (req, res) => {
         req.flash('error', "Page Not Found '_'");
         return res.redirect('/listings');
     }
-    res.render('listings/edit.ejs', { listing: listingDetails })
+
+    let originalImageUrl = listingDetails.image.url;
+    originalImageUrl = originalImageUrl.replace('/upload', '/upload/h_300,w_250');
+    res.render('listings/edit.ejs', { listing: listingDetails, originalImageUrl: originalImageUrl })
 };
 
 module.exports.updateListing = async (req, res) => {
     let { id } = req.params;
-   let Listing =  await listing.findByIdAndUpdate(id, { ...req.body.listing });
+    let Listing = await listing.findByIdAndUpdate(id, { ...req.body.listing });
 
-    if(req.file){
-     let url = req.file.path;
-    let filename = req.file.filename;
-    Listing.image = {url, filename};
-    await Listing.save();
+    if (req.file) {
+        let url = req.file.path;
+        let filename = req.file.filename;
+        Listing.image = { url, filename };
+        await Listing.save();
     }
 
     req.flash('success', "Listing Updated!");

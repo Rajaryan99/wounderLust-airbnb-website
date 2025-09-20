@@ -23,8 +23,12 @@
                             required><%=listing.description%></textarea>
                         <div id="validationServerUsernameFeedback" class="invalid-feedback"> Please provide valid
                             description</div>
-
                     </div>
+
+                    <div class="mb-3">
+                        <img src="<%= originalImageUrl %>" alt="" style="width: 400px; height: 300px;">
+                    </div>
+
                     <div class="mb-3">
                         <label for="image" class="form-label">Upload new Image</label>
                         <input type="file" class="form-control" name="listing[image]">
