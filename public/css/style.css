@@ -201,3 +201,9 @@ body {
 .login a:hover {
     color: #222222 !important;
 }
+
+/* Map */
+#map {
+    height: 400px;
+    width: 80vh;
+}
