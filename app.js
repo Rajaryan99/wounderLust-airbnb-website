@@ -58,10 +58,10 @@ app.get('/', (req, res) => {
 });
 
 //mongo stire
-const store  = MongoStroe.create({
+const store = MongoStroe.create({
     mongoUrl: dbUrl,
     crypto: {
-        secret:  "mySuperSecretCode",
+        secret: process.env.SECRET,
     },
     touchAfter: 24 * 3600,
 });
@@ -74,7 +74,7 @@ store.on('error', () => {
 //express sessions
 const sessionOption = {
     store,
-    secret: "mySuperSecretCode",
+    secret: process.env.SECRET,
     resave: false,
     saveUninitialized: true,
     Cookie: {
