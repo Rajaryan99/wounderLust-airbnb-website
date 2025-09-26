@@ -37,7 +37,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(methodOverride('_method'));
 app.engine('ejs', ejsMate);
 
-app.use(express.static(path.join(__dirname, 'public')))
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Database mongo ATLAS url
+const dbUrl = process.env.ATLAS_DB_URL;
 
 // Connecting Database  MONGODB
 main().then(() => {
@@ -46,7 +49,7 @@ main().then(() => {
     .catch(err => console.log(err));
 
 async function main() {
-    await mongoose.connect('mongodb://127.0.0.1:27017/wounderLust');
+    await mongoose.connect(dbUrl);
 }
 
 app.get('/', (req, res) => {
