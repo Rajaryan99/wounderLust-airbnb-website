@@ -207,3 +207,27 @@ body {
     height: 400px;
     width: 80vh;
 }
+
+.search-btn {
+    border: none;
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+    margin-left: .5rem;
+    background-color: #fe424d;
+    color: #fff;
+    font-size: .8rem;
+}
+
+.input {
+    display: flex;
+    align-items: center;
+}
+
+.input input {
+    height: 30px;
+    border-radius: 50px;
+    border: 1px solid gray;
+    padding: 0.5rem 3rem 0.5rem 3rem;
+    font-size: 0.9rem;
+}
