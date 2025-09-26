@@ -11,6 +11,7 @@ const methodOverride = require('method-override');
 const ejsMate = require('ejs-mate');
 const ExpressError = require('./utils/ExpressError.js');
 const session = require('express-session');
+const MongoStroe = require('connect-mongo');
 const flash = require('connect-flash');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
@@ -56,9 +57,23 @@ app.get('/', (req, res) => {
     res.redirect('/listings')
 });
 
+//mongo stire
+const store  = MongoStroe.create({
+    mongoUrl: dbUrl,
+    crypto: {
+        secret:  "mySuperSecretCode",
+    },
+    touchAfter: 24 * 3600,
+});
+
+store.on('error', () => {
+    console.log('ERROR in MONGO SESSION STORE', err);
+});
+
 
 //express sessions
 const sessionOption = {
+    store,
     secret: "mySuperSecretCode",
     resave: false,
     saveUninitialized: true,
@@ -68,6 +83,8 @@ const sessionOption = {
         httpOnly: true,
     }
 };
+
+
 
 app.use(session(sessionOption)); //passing sessionOption
 app.use(flash()); //connect-flash to show message once
